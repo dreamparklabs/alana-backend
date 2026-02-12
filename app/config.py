@@ -4,16 +4,15 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     # Database
-    database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/alana"
+    database_url: str = "postgresql://postgres:postgres@localhost:5432/alana"
     
     @property
     def db_url(self) -> str:
-        """Return database URL with correct driver for psycopg3."""
+        """Return database URL with correct driver."""
         url = self.database_url
+        # Railway uses postgres:// but SQLAlchemy needs postgresql://
         if url.startswith("postgres://"):
-            url = url.replace("postgres://", "postgresql+psycopg://", 1)
-        elif url.startswith("postgresql://") and "+psycopg" not in url:
-            url = url.replace("postgresql://", "postgresql+psycopg://", 1)
+            url = url.replace("postgres://", "postgresql://", 1)
         return url
     
     # JWT

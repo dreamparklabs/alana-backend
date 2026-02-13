@@ -20,6 +20,13 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
     
+    # OIDC/SSO Settings
+    oidc_issuer: str = ""
+    oidc_client_id: str = ""
+    oidc_jwks_url: str = ""
+    require_email_verified: bool = True
+    require_mfa: bool = False
+    
     # CORS
     frontend_url: str = "http://localhost:3000"
     

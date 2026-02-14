@@ -8,11 +8,13 @@ class Settings(BaseSettings):
     
     @property
     def db_url(self) -> str:
-        """Return database URL with correct driver."""
+        """Return database URL with correct driver (psycopg3)."""
         url = self.database_url
-        # Railway uses postgres:// but SQLAlchemy needs postgresql://
+        # Railway uses postgres:// but SQLAlchemy needs postgresql+psycopg://
         if url.startswith("postgres://"):
-            url = url.replace("postgres://", "postgresql://", 1)
+            url = url.replace("postgres://", "postgresql+psycopg://", 1)
+        elif url.startswith("postgresql://") and "+psycopg" not in url:
+            url = url.replace("postgresql://", "postgresql+psycopg://", 1)
         return url
     
     # JWT

@@ -26,3 +26,6 @@ class Project(Base):
     # Relationships
     workspace = relationship("Workspace", back_populates="projects")
     tasks = relationship("Task", back_populates="project", cascade="all, delete-orphan")
+    states = relationship("State", back_populates="project", cascade="all, delete-orphan")
+    labels = relationship("Label", back_populates="project")
+    cycles = relationship("Cycle", back_populates="project", cascade="all, delete-orphan")

@@ -8,15 +8,6 @@ import enum
 from app.database import Base
 
 
-class TaskStatus(str, enum.Enum):
-    BACKLOG = "backlog"
-    TODO = "todo"
-    IN_PROGRESS = "in_progress"
-    IN_REVIEW = "in_review"
-    DONE = "done"
-    CANCELLED = "cancelled"
-
-
 class TaskPriority(str, enum.Enum):
     NO_PRIORITY = "no_priority"
     URGENT = "urgent"
@@ -32,10 +23,11 @@ class Task(Base):
     number = Column(Integer, nullable=False)  # Task number within project
     title = Column(String(500), nullable=False)
     description = Column(Text, nullable=True)
-    status = Column(Enum(TaskStatus), default=TaskStatus.BACKLOG, nullable=False)
+    state_id = Column(UUID(as_uuid=True), ForeignKey("states.id"), nullable=True)
     priority = Column(Enum(TaskPriority), default=TaskPriority.NO_PRIORITY, nullable=False)
     estimate = Column(Integer, nullable=True)  # Story points or hours
     due_date = Column(DateTime, nullable=True)
+    start_date = Column(DateTime, nullable=True)
     project_id = Column(UUID(as_uuid=True), ForeignKey("projects.id"), nullable=False)
     assignee_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     creator_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
@@ -46,6 +38,9 @@ class Task(Base):
 
     # Relationships
     project = relationship("Project", back_populates="tasks")
+    state = relationship("State", back_populates="tasks")
     assignee = relationship("User", back_populates="assigned_tasks", foreign_keys=[assignee_id])
     creator = relationship("User", back_populates="created_tasks", foreign_keys=[creator_id])
     parent = relationship("Task", remote_side=[id], backref="subtasks")
+    labels = relationship("Label", secondary="task_labels", back_populates="tasks")
+    cycles = relationship("Cycle", secondary="cycle_tasks", back_populates="tasks")

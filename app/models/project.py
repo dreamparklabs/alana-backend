@@ -29,3 +29,6 @@ class Project(Base):
     states = relationship("State", back_populates="project", cascade="all, delete-orphan")
     labels = relationship("Label", back_populates="project")
     cycles = relationship("Cycle", back_populates="project", cascade="all, delete-orphan")
+    activities = relationship("Activity", back_populates="project")
+    comments = relationship("Comment", back_populates="project")
+    members = relationship("ProjectMember", back_populates="project", cascade="all, delete-orphan")

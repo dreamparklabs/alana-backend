@@ -25,3 +25,6 @@ class User(Base):
     owned_workspaces = relationship("Workspace", back_populates="owner")
     assigned_tasks = relationship("Task", back_populates="assignee", foreign_keys="Task.assignee_id")
     created_tasks = relationship("Task", back_populates="creator", foreign_keys="Task.creator_id")
+    comments = relationship("Comment", back_populates="author")
+    workspace_memberships = relationship("WorkspaceMember", back_populates="user", foreign_keys="WorkspaceMember.user_id")
+    project_memberships = relationship("ProjectMember", back_populates="user", foreign_keys="ProjectMember.user_id")

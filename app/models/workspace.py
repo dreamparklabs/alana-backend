@@ -24,3 +24,6 @@ class Workspace(Base):
     owner = relationship("User", back_populates="owned_workspaces")
     projects = relationship("Project", back_populates="workspace", cascade="all, delete-orphan")
     labels = relationship("Label", back_populates="workspace", cascade="all, delete-orphan")
+    activities = relationship("Activity", back_populates="workspace", cascade="all, delete-orphan")
+    comments = relationship("Comment", back_populates="workspace", cascade="all, delete-orphan")
+    members = relationship("WorkspaceMember", back_populates="workspace", cascade="all, delete-orphan")
